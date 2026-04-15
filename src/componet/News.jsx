@@ -14,17 +14,21 @@ const News = ({ pageSize, country, category, setProgress }) => {
 
   const getNewsData = async () => {
     try {
-      let url 
+      let url
       setProgress(10)
+
+      if (!api) {
+        throw new Error('Missing News API key. Set VITE_API_KEY in .env or your deployment environment.')
+      }
 
       if (country === 'in') {
         if (category === 'general') {
-          url = `${BASE_URL}/v2/top-headlines?q=india&apiKey=4c3e4bdae4534153965d6ecc331e9911&page=${page}&pageSize=${pageSize}`
+          url = `${BASE_URL}/v2/top-headlines?q=india&apiKey=${api}&page=${page}&pageSize=${pageSize}`
         } else {
-          url = `${BASE_URL}/v2/everything?q=india ${category}&sortBy=publishedAt&apiKey=4c3e4bdae4534153965d6ecc331e9911&page=${page}&pageSize=${pageSize}`
+          url = `${BASE_URL}/v2/everything?q=india ${category}&sortBy=publishedAt&apiKey=${api}&page=${page}&pageSize=${pageSize}`
         }
       } else {
-        url = `${BASE_URL}/v2/top-headlines?country=${country}&category=${category}&apiKey=4c3e4bdae4534153965d6ecc331e9911&page=${page}&pageSize=${pageSize}`
+        url = `${BASE_URL}/v2/top-headlines?country=${country}&category=${category}&apiKey=${api}&page=${page}&pageSize=${pageSize}`
       }
         setProgress(60)
       const response = await axios.get(url)
